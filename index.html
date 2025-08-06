@@ -166,152 +166,133 @@
                 </p>
             </div>
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- ChatGPT Card -->
-                <div class="card rounded-lg overflow-hidden relative">
-                    <div class="model-indicator chatgpt-bg"></div>
-                    <div class="p-6">
-                        <div class="flex items-center mb-4">
-                            <div class="flex-shrink-0">
-                                <img src="https://placehold.co/60x60" alt="ChatGPT logo with abstract purple and teal design" class="h-12 w-12 rounded-lg">
-                            </div>
-                            <div class="ml-4">
-                                <h3 class="text-lg font-semibold text-white">ChatGPT</h3>
-                                <p class="text-sm text-gray-400">by OpenAI</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-300 mb-4">Advanced conversational AI with deep natural language understanding and generation capabilities.</p>
-                        <div class="mt-5">
-                            <div class="flex justify-between text-sm text-gray-400 mb-2">
-                                <span>Best for:</span>
-                                <span class="text-white">Conversation, Writing</span>
-                            </div>
-                            <div class="flex justify-between text-sm text-gray-400 mb-2">
-                                <span>Version:</span>
-                                <span class="text-white">GPT-4 Turbo</span>
-                            </div>
-                            <div class="flex justify-between text-sm text-gray-400">
-                                <span>Context:</span>
-                                <span class="text-white">128K tokens</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="px-6 py-4 bg-gray-800 bg-opacity-50">
-                        <button class="w-full model-select-btn chatgpt-bg hover:bg-opacity-90 px-4 py-2 rounded-md text-sm font-medium text-white transition-all" data-model="chatgpt">
-                            Select Model
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Perplexity Card -->
-                <div class="card rounded-lg overflow-hidden relative">
-                    <div class="model-indicator perplexity-bg"></div>
-                    <div class="p-6">
-                        <div class="flex items-center mb-4">
-                            <div class="flex-shrink-0">
-                                <img src="https://placehold.co/60x60" alt="Perplexity AI logo with purple gradient design" class="h-12 w-12 rounded-lg">
-                            </div>
-                            <div class="ml-4">
-                                <h3 class="text-lg font-semibold text-white">Perplexity</h3>
-                                <p class="text-sm text-gray-400">by Perplexity AI</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-300 mb-4">Answer engine with real-time web search and advanced reasoning capabilities.</p>
-                        <div class="mt-5">
-                            <div class="flex justify-between text-sm text-gray-400 mb-2">
-                                <span>Best for:</span>
-                                <span class="text-white">Research, Citations</span>
-                            </div>
-                            <div class="flex justify-between text-sm text-gray-400 mb-2">
-                                <span>Version:</span>
-                                <span class="text-white">Sonar/Claude 3</span>
-                            </div>
-                            <div class="flex justify-between text-sm text-gray-400">
-                                <span>Strength:</span>
-                                <span class="text-white">Real-time search</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="px-6 py-4 bg-gray-800 bg-opacity-50">
-                        <button class="w-full model-select-btn perplexity-bg hover:bg-opacity-90 px-4 py-2 rounded-md text-sm font-medium text-white transition-all" data-model="perplexity">
-                            Select Model
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Gemini Card -->
-                <div class="card rounded-lg overflow-hidden relative">
-                    <div class="model-indicator gemini-bg"></div>
-                    <div class="p-6">
-                        <div class="flex items-center mb-4">
-                            <div class="flex-shrink-0">
-                                <img src="https://placehold.co/60x60" alt="Gemini logo with Google colors and futuristic design" class="h-12 w-12 rounded-lg">
-                            </div>
-                            <div class="ml-4">
-                                <h3 class="text-lg font-semibold text-white">Gemini</h3>
-                                <p class="text-sm text-gray-400">by Google</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-300 mb-4">Multimodal AI capable of understanding and generating across text, code, and images.</p>
-                        <div class="mt-5">
-                            <div class="flex justify-between text-sm text-gray-400 mb-2">
-                                <span>Best for:</span>
-                                <span class="text-white">Multimodal tasks</span>
-                            </div>
-                            <div class="flex justify-between text-sm text-gray-400 mb-2">
-                                <span>Version:</span>
-                                <span class="text-white">Gemini 1.5</span>
-                            </div>
-                            <div class="flex justify-between text-sm text-gray-400">
-                                <span>Context:</span>
-                                <span class="text-white">1M tokens</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="px-6 py-4 bg-gray-800 bg-opacity-50">
-                        <button class="w-full model-select-btn gemini-bg hover:bg-opacity-90 px-4 py-2 rounded-md text-sm font-medium text-white transition-all" data-model="gemini">
-                            Select Model
-                        </button>
-                    </div>
-                </div>
-
-                <!-- DeepSeek Card -->
-                <div class="card rounded-lg overflow-hidden relative">
-                    <div class="model-indicator deepseek-bg"></div>
-                    <div class="p-6">
-                        <div class="flex items-center mb-4">
-                            <div class="flex-shrink-0">
-                                <img src="https://placehold.co/60x60" alt="DeepSeek AI logo with blue and purple gradient design" class="h-12 w-12 rounded-lg">
-                            </div>
-                            <div class="ml-4">
-                                <h3 class="text-lg font-semibold text-white">DeepSeek</h3>
-                                <p class="text-sm text-gray-400">by DeepSeek AI</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-300 mb-4">Specialized in code generation, mathematics, and complex problem solving.</p>
-                        <div class="mt-5">
-                            <div class="flex justify-between text-sm text-gray-400 mb-2">
-                                <span>Best for:</span>
-                                <span class="text-white">Coding, Math</span>
-                            </div>
-                            <div class="flex justify-between text-sm text-gray-400 mb-2">
-                                <span>Version:</span>
-                                <span class="text-white">DeepSeek-V3</span>
-                            </div>
-                            <div class="flex justify-between text-sm text-gray-400">
-                                <span>Context:</span>
-                                <span class="text-white">128K tokens</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="px-6 py-4 bg-gray-800 bg-opacity-50">
-                        <button class="w-full model-select-btn deepseek-bg hover:bg-opacity-90 px-4 py-2 rounded-md text-sm font-medium text-white transition-all" data-model="deepseek">
-                            Select Model
-                        </button>
-                    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+       <!-- ChatGPT Card -->
+       <div class="card rounded-lg overflow-hidden relative shadow-lg bg-gray-900">
+        <div class="model-indicator chatgpt-bg"></div>
+        <div class="p-6">
+            <div class="flex items-center mb-4">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="ChatGPT logo" class="h-12 w-12 rounded-lg bg-white p-1">
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-white">ChatGPT</h3>
+                    <p class="text-sm text-gray-400">by OpenAI</p>
                 </div>
             </div>
-        </section>
+            <p class="text-gray-300 mb-4">Conversational AI with advanced reasoning and writing skills.</p>
+            <div class="text-sm text-gray-400 space-y-1">
+                <div class="flex justify-between">
+                    <span>Best for:</span><span class="text-white">Conversation, Writing</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Version:</span><span class="text-white">GPT-4 Turbo</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Context:</span><span class="text-white">128K tokens</span>
+                </div>
+            </div>
+        </div>
+        <div class="px-6 py-4 bg-gray-800 bg-opacity-50">
+            <button class="w-full model-select-btn chatgpt-bg hover:bg-opacity-90 px-4 py-2 rounded-md text-sm font-medium text-white transition-all" data-model="chatgpt">
+                Select Model
+            </button>
+        </div>
+    </div>
+
+    <!-- Perplexity Card -->
+    <div class="card rounded-lg overflow-hidden relative shadow-lg bg-gray-900">
+        <div class="model-indicator perplexity-bg"></div>
+        <div class="p-6">
+            <div class="flex items-center mb-4">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/90/Perplexity_logo_icon.svg" alt="Perplexity logo" class="h-12 w-12 rounded-lg bg-white p-1">
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-white">Perplexity</h3>
+                    <p class="text-sm text-gray-400">by Perplexity AI</p>
+                </div>
+            </div>
+            <p class="text-gray-300 mb-4">Answer engine with real-time search and citations.</p>
+            <div class="text-sm text-gray-400 space-y-1">
+                <div class="flex justify-between">
+                    <span>Best for:</span><span class="text-white">Research, Citations</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Version:</span><span class="text-white">Sonar/Claude 3</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Strength:</span><span class="text-white">Real-time Search</span>
+                </div>
+            </div>
+        </div>
+        <div class="px-6 py-4 bg-gray-800 bg-opacity-50">
+            <button class="w-full model-select-btn perplexity-bg hover:bg-opacity-90 px-4 py-2 rounded-md text-sm font-medium text-white transition-all" data-model="perplexity">
+                Select Model
+            </button>
+        </div>
+    </div>
+
+    <!-- Gemini Card -->
+    <div class="card rounded-lg overflow-hidden relative shadow-lg bg-gray-900">
+        <div class="model-indicator gemini-bg"></div>
+        <div class="p-6">
+            <div class="flex items-center mb-4">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/f/f0/Google_Gemini_logo.svg" alt="Gemini logo" class="h-12 w-12 rounded-lg bg-white p-1">
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-white">Gemini</h3>
+                    <p class="text-sm text-gray-400">by Google</p>
+                </div>
+            </div>
+            <p class="text-gray-300 mb-4">Multimodal AI for text, code, and images.</p>
+            <div class="text-sm text-gray-400 space-y-1">
+                <div class="flex justify-between">
+                    <span>Best for:</span><span class="text-white">Multimodal Tasks</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Version:</span><span class="text-white">Gemini 1.5</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Context:</span><span class="text-white">1M tokens</span>
+                </div>
+            </div>
+        </div>
+        <div class="px-6 py-4 bg-gray-800 bg-opacity-50">
+            <button class="w-full model-select-btn gemini-bg hover:bg-opacity-90 px-4 py-2 rounded-md text-sm font-medium text-white transition-all" data-model="gemini">
+                Select Model
+            </button>
+        </div>
+    </div>
+
+    <!-- DeepSeek Card -->
+    <div class="card rounded-lg overflow-hidden relative shadow-lg bg-gray-900">
+        <div class="model-indicator deepseek-bg"></div>
+        <div class="p-6">
+            <div class="flex items-center mb-4">
+                <img src="https://avatars.githubusercontent.com/u/161011186?s=200&v=4" alt="DeepSeek logo" class="h-12 w-12 rounded-lg bg-white p-1">
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-white">DeepSeek</h3>
+                    <p class="text-sm text-gray-400">by DeepSeek AI</p>
+                </div>
+            </div>
+            <p class="text-gray-300 mb-4">Great at solving complex coding & math problems.</p>
+            <div class="text-sm text-gray-400 space-y-1">
+                <div class="flex justify-between">
+                    <span>Best for:</span><span class="text-white">Coding, Math</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Version:</span><span class="text-white">DeepSeek-V3</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Context:</span><span class="text-white">128K tokens</span>
+                </div>
+            </div>
+        </div>
+        <div class="px-6 py-4 bg-gray-800 bg-opacity-50">
+            <button class="w-full model-select-btn deepseek-bg hover:bg-opacity-90 px-4 py-2 rounded-md text-sm font-medium text-white transition-all" data-model="deepseek">
+                Select Model
+            </button>
+        </div>
+    </div>
+
+</div>
+
 
         <!-- Footer Section -->
         <footer class="bg-gray-900 py-6">
