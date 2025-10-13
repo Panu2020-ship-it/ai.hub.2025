@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Model Hub - IIT Patna</title>
+    <title>AI Model Hub - Your Unified AI Playground</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         :root {
             --primary: #8b5cf6; /* A brighter purple */
@@ -20,6 +21,8 @@
             --perplexity: #9747ff;
             --gemini: #1a73e8;
             --deepseek: #5e5eff;
+            --claude: #d97706; /* Amber-700 */
+            --copilot: #00a4a6; /* A teal color */
         }
 
         body {
@@ -40,16 +43,22 @@
         .perplexity-bg { background-color: var(--perplexity); }
         .gemini-bg { background-color: var(--gemini); }
         .deepseek-bg { background-color: var(--deepseek); }
+        .claude-bg { background-color: var(--claude); }
+        .copilot-bg { background-color: var(--copilot); }
         
         .chatgpt-border { border-color: var(--chatgpt); }
         .perplexity-border { border-color: var(--perplexity); }
         .gemini-border { border-color: var(--gemini); }
         .deepseek-border { border-color: var(--deepseek); }
+        .claude-border { border-color: var(--claude); }
+        .copilot-border { border-color: var(--copilot); }
 
         .chatgpt-glow:hover { box-shadow: 0 0 20px var(--chatgpt); }
         .perplexity-glow:hover { box-shadow: 0 0 20px var(--perplexity); }
         .gemini-glow:hover { box-shadow: 0 0 20px var(--gemini); }
         .deepseek-glow:hover { box-shadow: 0 0 20px var(--deepseek); }
+        .claude-glow:hover { box-shadow: 0 0 20px var(--claude); }
+        .copilot-glow:hover { box-shadow: 0 0 20px var(--copilot); }
 
         .card {
             background: var(--dark);
@@ -67,12 +76,11 @@
             transition: all 0.3s ease-in-out;
         }
 
-        .file-upload:hover {
+        .file-upload:hover, .file-upload.dragover {
             border-color: var(--primary);
             background: rgba(139, 92, 246, 0.1);
         }
 
-        /* Model indicator styles */
         .model-indicator {
             position: absolute;
             top: 0;
@@ -82,15 +90,38 @@
             border-radius: 8px 8px 0 0;
         }
 
+        /* Loading Spinner */
+        .loader {
+            border: 4px solid #f3f3f330;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         /* Animation classes */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         .animate-fade-in {
             animation: fadeIn 0.5s ease-out forwards;
         }
+
+        /* Styling for prose in output */
+        #output-content.prose {
+            color: var(--light);
+        }
+        #output-content.prose h1, #output-content.prose h2, #output-content.prose h3, #output-content.prose strong { color: white; }
+        #output-content.prose a { color: var(--primary); }
+        #output-content.prose code { color: var(--secondary); background-color: #1a1a1a; padding: 2px 4px; border-radius: 4px;}
+        #output-content.prose pre { background-color: #1a1a1a; padding: 1rem; border-radius: 8px;}
+        #output-content.prose blockquote { border-left-color: var(--primary); }
     </style>
 </head>
 
@@ -103,26 +134,21 @@
                     <div class="flex-shrink-0 flex items-center">
                         <img src="https://placehold.co/40x40/000000/8b5cf6?text=AH" alt="AI Hub logo with circuit board design" class="h-8 w-8 rounded-full">
                         <span class="ml-3 text-xl font-bold gradient-text">AI Hub</span>
-                        <span class="ml-2 text-xs bg-purple-600 text-white px-2 py-1 rounded-full">IITP</span>
                     </div>
                 </div>
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-4">
                         <a href="#home" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-colors">Home</a>
                         <a href="#models" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-colors">Models</a>
-                        <a href="#try" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-colors">Try Now</a>
+                        <a href="#try" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-colors">Playground</a>
                         <a href="#api" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-colors">API</a>
                     </div>
                 </div>
-                <div class="hidden md:block">
-                    <div class="ml-4 flex items-center md:ml-6 space-x-3">
-                        <button class="border border-gray-700 px-4 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-all">
-                            Login
-                        </button>
-                        <button class="bg-gradient-to-r from-purple-600 to-amber-500 px-4 py-2 rounded-md text-sm font-medium text-white hover:opacity-90 transition-opacity">
-                            Sign Up Free
-                        </button>
-                    </div>
+                 <div class="hidden md:block">
+                     <a href="https://github.com" target="_blank" class="border border-gray-700 px-4 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-all flex items-center gap-2">
+                        <i class="fab fa-github"></i>
+                         View on GitHub
+                    </a>
                 </div>
             </div>
         </div>
@@ -131,20 +157,20 @@
     <!-- Hero Section -->
     <section id="home" class="relative pt-32 pb-32">
         <div class="absolute inset-0 overflow-hidden opacity-10">
-            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto=format&fit=crop" alt="Futuristic AI neural network visualization" class="object-cover w-full h-full">
+            <img src="https://images.unsplash.com/photo-1677756119517-756a188d2d94?q=80&w=2070&auto=format&fit=crop" alt="Futuristic AI neural network visualization" class="object-cover w-full h-full">
         </div>
-         <div class="absolute inset-0 bg-gradient-to-b from-black via-black/80 to-black"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black via-black/80 to-black"></div>
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
                 <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl animate-fade-in" style="animation-delay: 0.2s;">
-                    <span class="gradient-text">Unified AI Platform</span> for Research
+                    The <span class="gradient-text">Unified AI Playground</span>
                 </h1>
                 <p class="mt-6 max-w-3xl mx-auto text-xl text-gray-300 animate-fade-in" style="animation-delay: 0.4s;">
-                    Access ChatGPT, Perplexity, Gemini, and DeepSeek through a single integrated interface with powerful document analysis capabilities.
+                    Access ChatGPT, Gemini, Claude, and more through a single, free, and intuitive interface. Analyze documents, generate images, and compare the world's best AI models.
                 </p>
                 <div class="mt-10 flex flex-wrap justify-center gap-4 animate-fade-in" style="animation-delay: 0.6s;">
                     <a href="#try" class="bg-gradient-to-r from-purple-600 to-amber-500 px-8 py-3 rounded-md text-lg font-medium text-white hover:opacity-90 transition-opacity shadow-lg shadow-purple-500/20">
-                        Try Now
+                        Start Creating
                     </a>
                     <a href="#models" class="border border-gray-700 bg-gray-900/50 px-8 py-3 rounded-md text-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-all shadow-lg">
                         Compare Models
@@ -153,11 +179,11 @@
                 <div class="mt-8 flex justify-center space-x-6 animate-fade-in" style="animation-delay: 0.8s;">
                     <div class="flex items-center">
                         <i class="fas fa-check-circle text-green-400 mr-2"></i>
-                        <span class="text-sm text-gray-400">No credit card required</span>
+                        <span class="text-sm text-gray-400">Completely free, no login required</span>
                     </div>
                     <div class="flex items-center">
                         <i class="fas fa-bolt text-amber-400 mr-2"></i>
-                        <span class="text-sm text-gray-400">Real-time processing</span>
+                        <span class="text-sm text-gray-400">Real-time model switching</span>
                     </div>
                 </div>
             </div>
@@ -173,110 +199,73 @@
                     Integrated <span class="gradient-text">AI Models</span>
                 </h2>
                 <p class="mt-4 max-w-2xl text-xl text-gray-400 mx-auto">
-                    Choose from our four state-of-the-art AI models for any use case.
+                    Choose the perfect state-of-the-art AI model for any use case.
                 </p>
             </div>
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- MODEL CARDS START -->
                 <!-- ChatGPT Card -->
                 <div class="card rounded-lg overflow-hidden relative shadow-lg chatgpt-glow">
                     <div class="model-indicator chatgpt-bg"></div>
                     <div class="p-6">
-                        <div class="flex items-center mb-4">
-                            <div class="h-12 w-12 rounded-lg bg-gray-800 p-2 flex items-center justify-center">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="ChatGPT logo" >
-                            </div>
-                            <div class="ml-4">
-                                <h3 class="text-lg font-semibold text-white">ChatGPT</h3>
-                                <p class="text-sm text-gray-400">by OpenAI</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-300 mb-4 text-sm h-12">Conversational AI with advanced reasoning and writing skills.</p>
-                        <div class="text-sm text-gray-400 space-y-1">
-                             <div class="flex justify-between"><span>Best for:</span><span class="text-white font-medium">Conversation, Writing</span></div>
-                             <div class="flex justify-between"><span>Version:</span><span class="text-white font-medium">GPT-4 Turbo</span></div>
-                             <div class="flex justify-between"><span>Context:</span><span class="text-white font-medium">128K tokens</span></div>
-                        </div>
+                        <div class="flex items-center mb-4"><div class="h-12 w-12 rounded-lg bg-gray-800 p-2 flex items-center justify-center"><img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="ChatGPT logo"></div><div class="ml-4"><h3 class="text-lg font-semibold text-white">ChatGPT</h3><p class="text-sm text-gray-400">by OpenAI</p></div></div>
+                        <p class="text-gray-300 mb-4 text-sm h-12">Advanced conversational AI with powerful reasoning and writing skills.</p>
+                        <div class="text-sm text-gray-400 space-y-1"><div class="flex justify-between"><span>Best for:</span><span class="text-white font-medium">Conversation, Writing</span></div><div class="flex justify-between"><span>Version:</span><span class="text-white font-medium">GPT-4 Turbo</span></div></div>
                     </div>
-                    <div class="px-6 py-4 bg-gray-900/50">
-                        <button class="w-full model-select-btn chatgpt-bg hover:opacity-90 px-4 py-2 rounded-md text-sm font-medium text-white transition-opacity" data-model="chatgpt" data-model-name="ChatGPT">Select Model</button>
-                    </div>
+                    <div class="px-6 py-4 bg-gray-900/50"><button class="w-full model-select-btn chatgpt-bg hover:opacity-90 px-4 py-2 rounded-md text-sm font-medium text-white transition-opacity" data-model="chatgpt" data-model-name="ChatGPT">Select Model</button></div>
                 </div>
-
-                <!-- Perplexity Card -->
-                <div class="card rounded-lg overflow-hidden relative shadow-lg perplexity-glow">
-                    <div class="model-indicator perplexity-bg"></div>
-                    <div class="p-6">
-                        <div class="flex items-center mb-4">
-                             <div class="h-12 w-12 rounded-lg bg-gray-800 p-2 flex items-center justify-center">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/9/90/Perplexity_logo_icon.svg" alt="Perplexity logo">
-                            </div>
-                            <div class="ml-4">
-                                <h3 class="text-lg font-semibold text-white">Perplexity</h3>
-                                <p class="text-sm text-gray-400">by Perplexity AI</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-300 mb-4 text-sm h-12">Answer engine with real-time web search and source citations.</p>
-                        <div class="text-sm text-gray-400 space-y-1">
-                             <div class="flex justify-between"><span>Best for:</span><span class="text-white font-medium">Research, Citations</span></div>
-                             <div class="flex justify-between"><span>Version:</span><span class="text-white font-medium">Sonar/Claude 3</span></div>
-                             <div class="flex justify-between"><span>Strength:</span><span class="text-white font-medium">Real-time Search</span></div>
-                        </div>
-                    </div>
-                    <div class="px-6 py-4 bg-gray-900/50">
-                        <button class="w-full model-select-btn perplexity-bg hover:opacity-90 px-4 py-2 rounded-md text-sm font-medium text-white transition-opacity" data-model="perplexity" data-model-name="Perplexity">Select Model</button>
-                    </div>
-                </div>
-
                 <!-- Gemini Card -->
                 <div class="card rounded-lg overflow-hidden relative shadow-lg gemini-glow">
                     <div class="model-indicator gemini-bg"></div>
                     <div class="p-6">
-                        <div class="flex items-center mb-4">
-                             <div class="h-12 w-12 rounded-lg bg-gray-800 p-2 flex items-center justify-center">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/f/f0/Google_Gemini_logo.svg" alt="Gemini logo" >
-                            </div>
-                            <div class="ml-4">
-                                <h3 class="text-lg font-semibold text-white">Gemini</h3>
-                                <p class="text-sm text-gray-400">by Google</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-300 mb-4 text-sm h-12">Multimodal AI for text, code, and images with a massive context window.</p>
-                        <div class="text-sm text-gray-400 space-y-1">
-                             <div class="flex justify-between"><span>Best for:</span><span class="text-white font-medium">Multimodal Tasks</span></div>
-                             <div class="flex justify-between"><span>Version:</span><span class="text-white font-medium">Gemini 1.5 Pro</span></div>
-                             <div class="flex justify-between"><span>Context:</span><span class="text-white font-medium">1M tokens</span></div>
-                        </div>
+                        <div class="flex items-center mb-4"><div class="h-12 w-12 rounded-lg bg-gray-800 p-2 flex items-center justify-center"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f0/Google_Gemini_logo.svg" alt="Gemini logo"></div><div class="ml-4"><h3 class="text-lg font-semibold text-white">Gemini</h3><p class="text-sm text-gray-400">by Google</p></div></div>
+                        <p class="text-gray-300 mb-4 text-sm h-12">Multimodal AI for text, code, and vision with a massive context window.</p>
+                        <div class="text-sm text-gray-400 space-y-1"><div class="flex justify-between"><span>Best for:</span><span class="text-white font-medium">Vision, Multimodal</span></div><div class="flex justify-between"><span>Version:</span><span class="text-white font-medium">Gemini 1.5 Pro</span></div></div>
                     </div>
-                    <div class="px-6 py-4 bg-gray-900/50">
-                        <button class="w-full model-select-btn gemini-bg hover:opacity-90 px-4 py-2 rounded-md text-sm font-medium text-white transition-opacity" data-model="gemini" data-model-name="Gemini">Select Model</button>
-                    </div>
+                    <div class="px-6 py-4 bg-gray-900/50"><button class="w-full model-select-btn gemini-bg hover:opacity-90 px-4 py-2 rounded-md text-sm font-medium text-white transition-opacity" data-model="gemini" data-model-name="Gemini">Select Model</button></div>
                 </div>
-                
+                <!-- Claude Card -->
+                 <div class="card rounded-lg overflow-hidden relative shadow-lg claude-glow">
+                    <div class="model-indicator claude-bg"></div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-4"><div class="h-12 w-12 rounded-lg bg-gray-800 p-2 flex items-center justify-center"><img src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/651f0088b99914168c730e23_claude-2-icon.png" alt="Claude logo" class="p-1"></div><div class="ml-4"><h3 class="text-lg font-semibold text-white">Claude</h3><p class="text-sm text-gray-400">by Anthropic</p></div></div>
+                        <p class="text-gray-300 mb-4 text-sm h-12">AI assistant focused on helpful, harmless, and honest interactions.</p>
+                        <div class="text-sm text-gray-400 space-y-1"><div class="flex justify-between"><span>Best for:</span><span class="text-white font-medium">Summarization, Safety</span></div><div class="flex justify-between"><span>Version:</span><span class="text-white font-medium">Claude 3 Opus</span></div></div>
+                    </div>
+                    <div class="px-6 py-4 bg-gray-900/50"><button class="w-full model-select-btn claude-bg hover:opacity-90 px-4 py-2 rounded-md text-sm font-medium text-white transition-opacity" data-model="claude" data-model-name="Claude">Select Model</button></div>
+                </div>
                 <!-- DeepSeek Card -->
                 <div class="card rounded-lg overflow-hidden relative shadow-lg deepseek-glow">
                     <div class="model-indicator deepseek-bg"></div>
                     <div class="p-6">
-                        <div class="flex items-center mb-4">
-                             <div class="h-12 w-12 rounded-lg bg-gray-800 p-2 flex items-center justify-center">
-                                <img src="https://avatars.githubusercontent.com/u/161011186?s=200&v=4" alt="DeepSeek logo">
-                            </div>
-                            <div class="ml-4">
-                                <h3 class="text-lg font-semibold text-white">DeepSeek</h3>
-                                <p class="text-sm text-gray-400">by DeepSeek AI</p>
-                            </div>
-                        </div>
+                        <div class="flex items-center mb-4"><div class="h-12 w-12 rounded-lg bg-gray-800 p-2 flex items-center justify-center"><img src="https://avatars.githubusercontent.com/u/161011186?s=200&v=4" alt="DeepSeek logo"></div><div class="ml-4"><h3 class="text-lg font-semibold text-white">DeepSeek</h3><p class="text-sm text-gray-400">by DeepSeek AI</p></div></div>
                         <p class="text-gray-300 mb-4 text-sm h-12">Specialized in solving complex coding and mathematics problems.</p>
-                        <div class="text-sm text-gray-400 space-y-1">
-                             <div class="flex justify-between"><span>Best for:</span><span class="text-white font-medium">Coding, Math</span></div>
-                             <div class="flex justify-between"><span>Version:</span><span class="text-white font-medium">DeepSeek-V2</span></div>
-                             <div class="flex justify-between"><span>Context:</span><span class="text-white font-medium">128K tokens</span></div>
-                        </div>
+                        <div class="text-sm text-gray-400 space-y-1"><div class="flex justify-between"><span>Best for:</span><span class="text-white font-medium">Coding, Math</span></div><div class="flex justify-between"><span>Version:</span><span class="text-white font-medium">DeepSeek-V2</span></div></div>
                     </div>
-                    <div class="px-6 py-4 bg-gray-900/50">
-                        <button class="w-full model-select-btn deepseek-bg hover:opacity-90 px-4 py-2 rounded-md text-sm font-medium text-white transition-opacity" data-model="deepseek" data-model-name="DeepSeek">Select Model</button>
-                    </div>
+                    <div class="px-6 py-4 bg-gray-900/50"><button class="w-full model-select-btn deepseek-bg hover:opacity-90 px-4 py-2 rounded-md text-sm font-medium text-white transition-opacity" data-model="deepseek" data-model-name="DeepSeek">Select Model</button></div>
                 </div>
+                <!-- Perplexity Card -->
+                <div class="card rounded-lg overflow-hidden relative shadow-lg perplexity-glow">
+                    <div class="model-indicator perplexity-bg"></div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-4"><div class="h-12 w-12 rounded-lg bg-gray-800 p-2 flex items-center justify-center"><img src="https://upload.wikimedia.org/wikipedia/commons/9/90/Perplexity_logo_icon.svg" alt="Perplexity logo"></div><div class="ml-4"><h3 class="text-lg font-semibold text-white">Perplexity</h3><p class="text-sm text-gray-400">by Perplexity AI</p></div></div>
+                        <p class="text-gray-300 mb-4 text-sm h-12">Answer engine with real-time web search and source citations.</p>
+                        <div class="text-sm text-gray-400 space-y-1"><div class="flex justify-between"><span>Best for:</span><span class="text-white font-medium">Research, Citations</span></div><div class="flex justify-between"><span>Strength:</span><span class="text-white font-medium">Real-time Search</span></div></div>
+                    </div>
+                    <div class="px-6 py-4 bg-gray-900/50"><button class="w-full model-select-btn perplexity-bg hover:opacity-90 px-4 py-2 rounded-md text-sm font-medium text-white transition-opacity" data-model="perplexity" data-model-name="Perplexity">Select Model</button></div>
+                </div>
+                <!-- Copilot Card -->
+                 <div class="card rounded-lg overflow-hidden relative shadow-lg copilot-glow">
+                    <div class="model-indicator copilot-bg"></div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-4"><div class="h-12 w-12 rounded-lg bg-gray-800 p-2 flex items-center justify-center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Microsoft_Copilot_logo.svg/1024px-Microsoft_Copilot_logo.svg.png" alt="Copilot logo"></div><div class="ml-4"><h3 class="text-lg font-semibold text-white">Copilot</h3><p class="text-sm text-gray-400">by Microsoft</p></div></div>
+                        <p class="text-gray-300 mb-4 text-sm h-12">Creative assistant integrated with search for up-to-date, cited answers.</p>
+                        <div class="text-sm text-gray-400 space-y-1"><div class="flex justify-between"><span>Best for:</span><span class="text-white font-medium">Creative Tasks, Search</span></div><div class="flex justify-between"><span>Engine:</span><span class="text-white font-medium">GPT-4 / DALL-E 3</span></div></div>
+                    </div>
+                    <div class="px-6 py-4 bg-gray-900/50"><button class="w-full model-select-btn copilot-bg hover:opacity-90 px-4 py-2 rounded-md text-sm font-medium text-white transition-opacity" data-model="copilot" data-model-name="Copilot">Select Model</button></div>
+                </div>
+                <!-- MODEL CARDS END -->
             </div>
         </section>
         
@@ -284,26 +273,36 @@
         <section id="try" class="py-16">
             <div class="text-center mb-12">
                 <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
-                    Try the <span class="gradient-text">AI Hub</span>
+                    AI <span class="gradient-text">Playground</span>
                 </h2>
                 <p id="try-subtitle" class="mt-4 max-w-2xl text-xl text-gray-400 mx-auto transition-all">
                     Select a model above to get started.
                 </p>
             </div>
             
-            <div class="max-w-4xl mx-auto card rounded-lg p-8 transition-all duration-500 border-2 border-gray-800" id="try-container">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="max-w-6xl mx-auto card rounded-lg p-4 sm:p-8 transition-all duration-500 border-2 border-gray-800" id="try-container">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     <!-- Input Column -->
                     <div>
-                        <h3 class="font-bold text-lg mb-4">Input</h3>
+                        <div class="flex border-b border-gray-700 mb-4">
+                            <button id="mode-text-btn" class="flex-1 text-center py-3 font-semibold border-b-2 border-purple-500 text-white">
+                               <i class="fas fa-file-alt mr-2"></i> Text & Document
+                            </button>
+                            <button id="mode-image-btn" class="flex-1 text-center py-3 font-semibold border-b-2 border-transparent text-gray-400 hover:text-white transition-colors">
+                               <i class="fas fa-image mr-2"></i> Image Generation
+                            </button>
+                        </div>
+
                         <div class="space-y-6">
-                             <!-- File Upload -->
-                             <div class="file-upload rounded-lg p-6 text-center cursor-pointer" id="file-drop-zone">
-                                <i class="fas fa-file-arrow-up text-4xl text-gray-500 mb-3"></i>
-                                <p class="text-gray-400">Drag & drop a document here</p>
-                                <p class="text-sm text-gray-500">or click to browse</p>
-                                <input type="file" id="file-input" class="hidden">
-                                <p id="file-name" class="mt-2 text-sm text-purple-400"></p>
+                            <!-- Text/Doc Input Area -->
+                            <div id="text-input-area">
+                                <div class="file-upload rounded-lg p-6 text-center cursor-pointer" id="file-drop-zone">
+                                    <i class="fas fa-file-arrow-up text-4xl text-gray-500 mb-3"></i>
+                                    <p class="text-gray-400">Drag & drop a document here</p>
+                                    <p class="text-sm text-gray-500">or click to browse (PDF, TXT)</p>
+                                    <input type="file" id="file-input" class="hidden" accept=".pdf,.txt,.md">
+                                    <p id="file-name" class="mt-2 text-sm text-purple-400 font-semibold"></p>
+                                </div>
                             </div>
                             
                             <!-- Prompt Textarea -->
@@ -312,19 +311,53 @@
                                 <textarea id="prompt-input" rows="6" class="w-full bg-gray-900 border border-gray-700 rounded-md p-3 text-white focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all" placeholder="Ask about the document or enter a general query..."></textarea>
                             </div>
                             
-                            <button id="generate-btn" class="w-full bg-gradient-to-r from-purple-600 to-amber-500 px-8 py-3 rounded-md text-lg font-medium text-white hover:opacity-90 transition-opacity shadow-lg shadow-purple-500/20 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-                                Generate Response
+                            <button id="generate-btn" class="w-full bg-gradient-to-r from-purple-600 to-amber-500 px-8 py-3 rounded-md text-lg font-medium text-white hover:opacity-90 transition-opacity shadow-lg shadow-purple-500/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3" disabled>
+                                <span id="btn-text">Generate</span>
+                                <i id="btn-icon" class="fas fa-magic"></i>
                             </button>
                         </div>
                     </div>
                     
                     <!-- Output Column -->
-                    <div>
-                        <h3 class="font-bold text-lg mb-4">Output</h3>
-                        <div id="output-container" class="bg-gray-900 border border-gray-700 rounded-md p-4 h-full min-h-[200px] text-gray-400 overflow-y-auto">
-                            The generated response will appear here.
+                    <div class="flex flex-col">
+                         <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-lg">Output</h3>
+                            <div id="output-actions" class="flex items-center gap-2 hidden">
+                                <button id="copy-btn" title="Copy to Clipboard" class="text-gray-400 hover:text-white transition-colors p-2 rounded-md bg-gray-800"><i class="fas fa-clipboard"></i></button>
+                                <button id="export-btn" title="Export as TXT" class="text-gray-400 hover:text-white transition-colors p-2 rounded-md bg-gray-800"><i class="fas fa-file-download"></i></button>
+                            </div>
+                         </div>
+                        <div id="output-container" class="bg-gray-900 border border-gray-700 rounded-md p-4 h-full min-h-[300px] text-gray-300 flex-grow flex items-center justify-center overflow-y-auto">
+                           <div id="output-placeholder" class="text-center text-gray-500">
+                                <i class="fas fa-lightbulb text-4xl mb-3"></i>
+                                <p>The generated response will appear here.</p>
+                            </div>
+                           <div id="output-content" class="w-full h-full prose max-w-none"></div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- API Section -->
+        <section id="api" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
+                    Simple & Powerful <span class="gradient-text">API</span>
+                </h2>
+                <p class="mt-4 max-w-2xl text-xl text-gray-400 mx-auto">
+                    Integrate all models into your own applications with a single API endpoint.
+                </p>
+            </div>
+            <div class="max-w-4xl mx-auto card rounded-lg p-8">
+                <p class="text-lg text-center text-gray-400 mb-6">API documentation coming soon! We're working on providing a seamless developer experience.</p>
+                <div class="bg-gray-900 rounded-md p-4 font-mono text-sm text-gray-300 border border-gray-700">
+                    <span class="text-purple-400">POST</span> /api/v1/generate<br>
+                    <pre class="mt-4 whitespace-pre-wrap"><code>{
+    "model": "chatgpt",
+    "prompt": "Explain quantum computing in simple terms.",
+    "stream": true
+}</code></pre>
                 </div>
             </div>
         </section>
@@ -335,71 +368,219 @@
     <footer class="bg-black border-t border-gray-800 py-6">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p class="text-gray-400">
-                &copy; 2025 Patil Group. All rights reserved.
+                &copy; 2025 AI Hub. All AI models are products of their respective owners.
             </p>
         </div>
     </footer>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        // --- DOM Elements ---
         const modelSelectButtons = document.querySelectorAll('.model-select-btn');
         const tryContainer = document.getElementById('try-container');
         const trySubtitle = document.getElementById('try-subtitle');
         const generateBtn = document.getElementById('generate-btn');
-
-        // Model selection logic
-        modelSelectButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const model = button.dataset.model;
-                const modelName = button.dataset.modelName;
-                
-                // Update UI to reflect selected model
-                trySubtitle.innerHTML = `You have selected <span class="font-bold text-white">${modelName}</span>. Ready to generate.`;
-                
-                const borderClasses = ['chatgpt-border', 'perplexity-border', 'gemini-border', 'deepseek-border'];
-                tryContainer.classList.remove(...borderClasses);
-                tryContainer.classList.add(`${model}-border`);
-
-                generateBtn.disabled = false;
-                
-                // Smooth scroll to the try section
-                document.getElementById('try').scrollIntoView({ behavior: 'smooth' });
-            });
-        });
-
-        // File upload logic
+        const btnText = document.getElementById('btn-text');
+        const btnIcon = document.getElementById('btn-icon');
+        const promptInput = document.getElementById('prompt-input');
+        
         const fileDropZone = document.getElementById('file-drop-zone');
         const fileInput = document.getElementById('file-input');
         const fileNameDisplay = document.getElementById('file-name');
+        
+        const outputContainer = document.getElementById('output-container');
+        const outputPlaceholder = document.getElementById('output-placeholder');
+        const outputContent = document.getElementById('output-content');
+        const outputActions = document.getElementById('output-actions');
+        const copyBtn = document.getElementById('copy-btn');
+        const exportBtn = document.getElementById('export-btn');
 
-        fileDropZone.addEventListener('click', () => fileInput.click());
+        const modeTextBtn = document.getElementById('mode-text-btn');
+        const modeImageBtn = document.getElementById('mode-image-btn');
+        const textInputArea = document.getElementById('text-input-area');
+
+        // --- App State ---
+        let state = {
+            selectedModel: null,
+            selectedModelName: null,
+            currentMode: 'text', // 'text' or 'image'
+            isLoading: false,
+            uploadedFile: null,
+            lastResponse: '',
+        };
+
+        // --- Mock API Call ---
+        // In a real application, this function would make a `fetch` call to your backend server.
+        const callAIModelAPI = (model, mode, prompt, file) => {
+            console.log(`Calling mock API with:`, { model, mode, prompt, file });
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    if (mode === 'image') {
+                        // Image generation response
+                        const imageUrl = `https://placehold.co/512x512/000000/FFFFFF?text=${encodeURIComponent(prompt.substring(0, 20))}`;
+                        resolve({ type: 'image', content: imageUrl });
+                        return;
+                    }
+
+                    let responseText = '';
+                    if (file) {
+                        responseText += `### Analysis of ${file.name}\n\n`;
+                    }
+                    
+                    switch(model) {
+                        case 'chatgpt': responseText += `**ChatGPT Response:** As an advanced language model, I've analyzed your prompt: "${prompt}". Here is a comprehensive, multi-paragraph answer that breaks down the key concepts with clarity and detail. This model excels at creative writing and in-depth explanations.`; break;
+                        case 'gemini': responseText += `**Gemini 1.5 Pro says:** Your query, "${prompt}", has been processed. My strength is in multimodal understanding. If you had provided an image or document, I could have analyzed it in great detail. For text, I provide structured and factual answers. \n\n- **Point 1:** Detail one.\n- **Point 2:** Detail two.`; break;
+                        case 'claude': responseText += `**Claude 3 Opus:** Hello! I've thoughtfully considered your request: "${prompt}". My goal is to provide helpful, harmless, and honest information. Here is a summary that is easy to understand and safe for all audiences. I prioritize clarity and responsible communication.`; break;
+                        case 'deepseek': responseText += `**DeepSeek Coder:** Initializing code generation sequence for prompt: "${prompt}".\n\n\`\`\`python\ndef solve_problem(prompt):\n    """\n    This function demonstrates a solution structure.\n    My expertise is in generating accurate and efficient code.\n    """\n    print(f"Solving for: {prompt}")\n    # ... complex logic here ...\n    return "Solution complete."\n\nresult = solve_problem("${prompt}")\nprint(result)\n\`\`\``; break;
+                        case 'perplexity': responseText += `**Perplexity Answer:** Searching the web for "${prompt}"...\n\nAccording to my real-time search, here are the key findings with citations:\n\n1.  **Finding One:** This is a key fact from a reliable source [1].\n2.  **Finding Two:** Further information confirms this point from another source [2].\n\n**Sources:**\n[1] example-source.com\n[2] another-credible-site.net`; break;
+                        case 'copilot': responseText += `**Microsoft Copilot:** I've synthesized information from the web and my creative engine to respond to "${prompt}". Here is a balanced answer that includes both factual data and creative insights, complete with citations. This is ideal for brainstorming and research.`; break;
+                        default: responseText = 'An unknown error occurred. Please select a model.';
+                    }
+                    resolve({ type: 'text', content: responseText });
+                }, 1500 + Math.random() * 1000); // Simulate network latency
+            });
+        };
         
-        fileDropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            fileDropZone.classList.add('border-purple-500', 'bg-purple-900/20');
-        });
-        
-        fileDropZone.addEventListener('dragleave', () => {
-            fileDropZone.classList.remove('border-purple-500', 'bg-purple-900/20');
-        });
+
+        // --- Functions ---
+        const updateUI = () => {
+            // Update generate button state
+            generateBtn.disabled = !state.selectedModel || state.isLoading;
+            if (state.isLoading) {
+                btnText.textContent = 'Generating...';
+                btnIcon.className = 'fas fa-spinner fa-spin';
+            } else {
+                btnText.textContent = state.currentMode === 'text' ? 'Generate Response' : 'Generate Image';
+                btnIcon.className = state.currentMode === 'text' ? 'fas fa-magic' : 'fas fa-image';
+            }
+
+            // Update mode buttons
+            modeTextBtn.classList.toggle('border-purple-500', state.currentMode === 'text');
+            modeTextBtn.classList.toggle('text-white', state.currentMode === 'text');
+            modeTextBtn.classList.toggle('border-transparent', state.currentMode !== 'text');
+            modeTextBtn.classList.toggle('text-gray-400', state.currentMode !== 'text');
+            
+            modeImageBtn.classList.toggle('border-purple-500', state.currentMode === 'image');
+            modeImageBtn.classList.toggle('text-white', state.currentMode === 'image');
+            modeImageBtn.classList.toggle('border-transparent', state.currentMode !== 'image');
+            modeImageBtn.classList.toggle('text-gray-400', state.currentMode !== 'image');
+
+            // Show/hide file upload area
+            textInputArea.style.display = state.currentMode === 'text' ? 'block' : 'none';
+            promptInput.placeholder = state.currentMode === 'text' 
+                ? 'Ask about the document or enter a general query...'
+                : 'Describe the image you want to create...';
+        };
+
+        const handleModelSelect = (e) => {
+            const button = e.currentTarget;
+            state.selectedModel = button.dataset.model;
+            state.selectedModelName = button.dataset.modelName;
+            
+            trySubtitle.innerHTML = `You have selected <span class="font-bold text-white">${state.selectedModelName}</span>. Ready to generate.`;
+            
+            const borderClasses = ['chatgpt-border', 'perplexity-border', 'gemini-border', 'deepseek-border', 'claude-border', 'copilot-border'];
+            tryContainer.classList.remove(...borderClasses);
+            tryContainer.classList.add(`${state.selectedModel}-border`);
+            
+            document.getElementById('try').scrollIntoView({ behavior: 'smooth' });
+            updateUI();
+        };
 
         const handleFile = (file) => {
             if (file) {
+                state.uploadedFile = file;
                 fileNameDisplay.textContent = `File: ${file.name}`;
                 fileDropZone.classList.remove('border-purple-500', 'bg-purple-900/20');
             }
         };
 
+        const handleGenerate = async () => {
+            const prompt = promptInput.value.trim();
+            if (!prompt) {
+                alert('Please enter a prompt.');
+                return;
+            }
+            
+            state.isLoading = true;
+            updateUI();
+
+            outputPlaceholder.style.display = 'none';
+            outputContent.innerHTML = '<div class="w-full h-full flex items-center justify-center"><div class="loader"></div></div>';
+            outputActions.classList.add('hidden');
+
+            try {
+                const response = await callAIModelAPI(state.selectedModel, state.currentMode, prompt, state.uploadedFile);
+                state.lastResponse = response.content;
+
+                if(response.type === 'image') {
+                    outputContent.innerHTML = `<img src="${response.content}" alt="Generated image for: ${prompt}" class="rounded-lg mx-auto max-h-full object-contain">`;
+                    // No copy/export for images in this demo
+                } else {
+                    outputContent.innerHTML = marked.parse(response.content);
+                    outputActions.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error(error);
+                outputContent.innerHTML = '<p class="text-red-400">An error occurred while generating the response.</p>';
+            } finally {
+                state.isLoading = false;
+                updateUI();
+            }
+        };
+
+        // --- Event Listeners ---
+        modelSelectButtons.forEach(button => button.addEventListener('click', handleModelSelect));
+        generateBtn.addEventListener('click', handleGenerate);
+
+        // Mode switching
+        modeTextBtn.addEventListener('click', () => {
+            state.currentMode = 'text';
+            updateUI();
+        });
+        modeImageBtn.addEventListener('click', () => {
+            state.currentMode = 'image';
+            state.uploadedFile = null;
+            fileNameDisplay.textContent = '';
+            updateUI();
+        });
+
+        // File upload listeners
+        fileDropZone.addEventListener('click', () => fileInput.click());
+        fileDropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileDropZone.classList.add('dragover');
+        });
+        fileDropZone.addEventListener('dragleave', () => fileDropZone.classList.remove('dragover'));
         fileDropZone.addEventListener('drop', (e) => {
             e.preventDefault();
+            fileDropZone.classList.remove('dragover');
             handleFile(e.dataTransfer.files[0]);
         });
-        
-        fileInput.addEventListener('change', (e) => {
-            handleFile(e.target.files[0]);
+        fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+
+        // Output actions
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(state.lastResponse)
+                .then(() => alert('Copied to clipboard!'))
+                .catch(err => console.error('Failed to copy: ', err));
         });
+
+        exportBtn.addEventListener('click', () => {
+            const blob = new Blob([state.lastResponse], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `ai-hub-output-${Date.now()}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+
+        // --- Initial Load ---
+        updateUI();
     });
 </script>
 </body>
 </html>
-
