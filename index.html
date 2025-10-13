@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Model Hub - IIT Patna</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-    <script src="https://unpkg.com/tesseract.js@4/dist/tesseract.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
     <style>
         :root {
-            --primary: #6d28d9;
-            --primary-dark: #5b21b6;
+            --primary: #8b5cf6; /* A brighter purple */
             --secondary: #f59e0b;
-            --dark: #0f172a;
-            --darker: #020617;
+            --dark: #111111; /* Off-black for elements */
+            --darker: #000000; /* Pure black for background */
             --light: #f8fafc;
             --chatgpt: #10a37f;
             --perplexity: #9747ff;
@@ -40,27 +40,36 @@
         .perplexity-bg { background-color: var(--perplexity); }
         .gemini-bg { background-color: var(--gemini); }
         .deepseek-bg { background-color: var(--deepseek); }
+        
+        .chatgpt-border { border-color: var(--chatgpt); }
+        .perplexity-border { border-color: var(--perplexity); }
+        .gemini-border { border-color: var(--gemini); }
+        .deepseek-border { border-color: var(--deepseek); }
+
+        .chatgpt-glow:hover { box-shadow: 0 0 20px var(--chatgpt); }
+        .perplexity-glow:hover { box-shadow: 0 0 20px var(--perplexity); }
+        .gemini-glow:hover { box-shadow: 0 0 20px var(--gemini); }
+        .deepseek-glow:hover { box-shadow: 0 0 20px var(--deepseek); }
 
         .card {
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(10px);
+            background: var(--dark);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s;
+            transition: all 0.3s ease-in-out;
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            transform: translateY(-8px);
+            border-color: rgba(255, 255, 255, 0.2);
         }
 
         .file-upload {
             border: 2px dashed rgba(255, 255, 255, 0.2);
-            transition: all 0.3s;
+            transition: all 0.3s ease-in-out;
         }
 
         .file-upload:hover {
             border-color: var(--primary);
-            background: rgba(109, 40, 217, 0.1);
+            background: rgba(139, 92, 246, 0.1);
         }
 
         /* Model indicator styles */
@@ -69,47 +78,48 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 5px;
-            border-radius: 4px 4px 0 0;
+            height: 4px;
+            border-radius: 8px 8px 0 0;
         }
 
         /* Animation classes */
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .animate-fade {
-            animation: fadeIn 0.3s ease-out;
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
         }
     </style>
 </head>
+
 <body class="min-h-screen">
     <!-- Navigation -->
-    <nav class="bg-gray-900 border-b border-gray-800 fixed w-full z-50">
+    <nav class="bg-black/50 backdrop-blur-lg border-b border-gray-800 fixed w-full z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <div class="flex items-center">
                     <div class="flex-shrink-0 flex items-center">
-                        <img src="https://placehold.co/32x32" alt="AI Hub logo with circuit board design" class="h-8 w-8 rounded-full">
-                        <span class="ml-2 text-xl font-bold gradient-text">AI Hub</span>
+                        <img src="https://placehold.co/40x40/000000/8b5cf6?text=AH" alt="AI Hub logo with circuit board design" class="h-8 w-8 rounded-full">
+                        <span class="ml-3 text-xl font-bold gradient-text">AI Hub</span>
                         <span class="ml-2 text-xs bg-purple-600 text-white px-2 py-1 rounded-full">IITP</span>
                     </div>
                 </div>
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="#home" class="px-3 py-2 rounded-md text-sm font-medium text-white bg-gray-800">Home</a>
-                        <a href="#models" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700">Models</a>
-                        <a href="#try" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700">Try Now</a>
-                        <a href="#api" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700">API</a>
+                        <a href="#home" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-colors">Home</a>
+                        <a href="#models" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-colors">Models</a>
+                        <a href="#try" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-colors">Try Now</a>
+                        <a href="#api" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-colors">API</a>
                     </div>
                 </div>
                 <div class="hidden md:block">
                     <div class="ml-4 flex items-center md:ml-6 space-x-3">
-                        <button class="border border-gray-600 px-4 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-all">
+                        <button class="border border-gray-700 px-4 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-all">
                             Login
                         </button>
-                        <button class="bg-gradient-to-r from-purple-600 to-amber-500 px-4 py-2 rounded-md text-sm font-medium text-white hover:from-purple-700 hover:to-amber-600 transition-all">
+                        <button class="bg-gradient-to-r from-purple-600 to-amber-500 px-4 py-2 rounded-md text-sm font-medium text-white hover:opacity-90 transition-opacity">
                             Sign Up Free
                         </button>
                     </div>
@@ -119,27 +129,28 @@
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="relative pt-24 pb-32">
-        <div class="absolute inset-0 overflow-hidden opacity-20">
-            <img src="https://placehold.co/1920x1080" alt="Futuristic AI neural network visualization with glowing connections and data streams" class="object-cover w-full h-full">
+    <section id="home" class="relative pt-32 pb-32">
+        <div class="absolute inset-0 overflow-hidden opacity-10">
+            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto=format&fit=crop" alt="Futuristic AI neural network visualization" class="object-cover w-full h-full">
         </div>
+         <div class="absolute inset-0 bg-gradient-to-b from-black via-black/80 to-black"></div>
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
-                <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
+                <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl animate-fade-in" style="animation-delay: 0.2s;">
                     <span class="gradient-text">Unified AI Platform</span> for Research
                 </h1>
-                <p class="mt-6 max-w-3xl mx-auto text-xl text-gray-300">
-                    Access ChatGPT, Perplexity, Gemini, and DeepSeek through a single integrated interface with powerful document analysis capabilities
+                <p class="mt-6 max-w-3xl mx-auto text-xl text-gray-300 animate-fade-in" style="animation-delay: 0.4s;">
+                    Access ChatGPT, Perplexity, Gemini, and DeepSeek through a single integrated interface with powerful document analysis capabilities.
                 </p>
-                <div class="mt-10 flex flex-wrap justify-center gap-4">
-                    <a href="#try" class="bg-gradient-to-r from-purple-600 to-amber-500 px-8 py-3 rounded-md text-lg font-medium text-white hover:from-purple-700 hover:to-amber-600 transition-all shadow-lg">
+                <div class="mt-10 flex flex-wrap justify-center gap-4 animate-fade-in" style="animation-delay: 0.6s;">
+                    <a href="#try" class="bg-gradient-to-r from-purple-600 to-amber-500 px-8 py-3 rounded-md text-lg font-medium text-white hover:opacity-90 transition-opacity shadow-lg shadow-purple-500/20">
                         Try Now
                     </a>
-                    <a href="#models" class="border border-gray-600 px-8 py-3 rounded-md text-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-all shadow-lg">
+                    <a href="#models" class="border border-gray-700 bg-gray-900/50 px-8 py-3 rounded-md text-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-all shadow-lg">
                         Compare Models
                     </a>
                 </div>
-                <div class="mt-8 flex justify-center space-x-6">
+                <div class="mt-8 flex justify-center space-x-6 animate-fade-in" style="animation-delay: 0.8s;">
                     <div class="flex items-center">
                         <i class="fas fa-check-circle text-green-400 mr-2"></i>
                         <span class="text-sm text-gray-400">No credit card required</span>
@@ -162,146 +173,233 @@
                     Integrated <span class="gradient-text">AI Models</span>
                 </h2>
                 <p class="mt-4 max-w-2xl text-xl text-gray-400 mx-auto">
-                    Choose from our four state-of-the-art AI models for different use cases
+                    Choose from our four state-of-the-art AI models for any use case.
                 </p>
             </div>
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-       <!-- ChatGPT Card -->
-       <div class="card rounded-lg overflow-hidden relative shadow-lg bg-gray-900">
-        <div class="model-indicator chatgpt-bg"></div>
-        <div class="p-6">
-            <div class="flex items-center mb-4">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="ChatGPT logo" class="h-12 w-12 rounded-lg bg-white p-1">
-                <div class="ml-4">
-                    <h3 class="text-lg font-semibold text-white">ChatGPT</h3>
-                    <p class="text-sm text-gray-400">by OpenAI</p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- ChatGPT Card -->
+                <div class="card rounded-lg overflow-hidden relative shadow-lg chatgpt-glow">
+                    <div class="model-indicator chatgpt-bg"></div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="h-12 w-12 rounded-lg bg-gray-800 p-2 flex items-center justify-center">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="ChatGPT logo" >
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-semibold text-white">ChatGPT</h3>
+                                <p class="text-sm text-gray-400">by OpenAI</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-300 mb-4 text-sm h-12">Conversational AI with advanced reasoning and writing skills.</p>
+                        <div class="text-sm text-gray-400 space-y-1">
+                             <div class="flex justify-between"><span>Best for:</span><span class="text-white font-medium">Conversation, Writing</span></div>
+                             <div class="flex justify-between"><span>Version:</span><span class="text-white font-medium">GPT-4 Turbo</span></div>
+                             <div class="flex justify-between"><span>Context:</span><span class="text-white font-medium">128K tokens</span></div>
+                        </div>
+                    </div>
+                    <div class="px-6 py-4 bg-gray-900/50">
+                        <button class="w-full model-select-btn chatgpt-bg hover:opacity-90 px-4 py-2 rounded-md text-sm font-medium text-white transition-opacity" data-model="chatgpt" data-model-name="ChatGPT">Select Model</button>
+                    </div>
                 </div>
-            </div>
-            <p class="text-gray-300 mb-4">Conversational AI with advanced reasoning and writing skills.</p>
-            <div class="text-sm text-gray-400 space-y-1">
-                <div class="flex justify-between">
-                    <span>Best for:</span><span class="text-white">Conversation, Writing</span>
-                </div>
-                <div class="flex justify-between">
-                    <span>Version:</span><span class="text-white">GPT-4 Turbo</span>
-                </div>
-                <div class="flex justify-between">
-                    <span>Context:</span><span class="text-white">128K tokens</span>
-                </div>
-            </div>
-        </div>
-        <div class="px-6 py-4 bg-gray-800 bg-opacity-50">
-            <button class="w-full model-select-btn chatgpt-bg hover:bg-opacity-90 px-4 py-2 rounded-md text-sm font-medium text-white transition-all" data-model="chatgpt">
-                Select Model
-            </button>
-        </div>
-    </div>
 
-    <!-- Perplexity Card -->
-    <div class="card rounded-lg overflow-hidden relative shadow-lg bg-gray-900">
-        <div class="model-indicator perplexity-bg"></div>
-        <div class="p-6">
-            <div class="flex items-center mb-4">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/9/90/Perplexity_logo_icon.svg" alt="Perplexity logo" class="h-12 w-12 rounded-lg bg-white p-1">
-                <div class="ml-4">
-                    <h3 class="text-lg font-semibold text-white">Perplexity</h3>
-                    <p class="text-sm text-gray-400">by Perplexity AI</p>
+                <!-- Perplexity Card -->
+                <div class="card rounded-lg overflow-hidden relative shadow-lg perplexity-glow">
+                    <div class="model-indicator perplexity-bg"></div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                             <div class="h-12 w-12 rounded-lg bg-gray-800 p-2 flex items-center justify-center">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/9/90/Perplexity_logo_icon.svg" alt="Perplexity logo">
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-semibold text-white">Perplexity</h3>
+                                <p class="text-sm text-gray-400">by Perplexity AI</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-300 mb-4 text-sm h-12">Answer engine with real-time web search and source citations.</p>
+                        <div class="text-sm text-gray-400 space-y-1">
+                             <div class="flex justify-between"><span>Best for:</span><span class="text-white font-medium">Research, Citations</span></div>
+                             <div class="flex justify-between"><span>Version:</span><span class="text-white font-medium">Sonar/Claude 3</span></div>
+                             <div class="flex justify-between"><span>Strength:</span><span class="text-white font-medium">Real-time Search</span></div>
+                        </div>
+                    </div>
+                    <div class="px-6 py-4 bg-gray-900/50">
+                        <button class="w-full model-select-btn perplexity-bg hover:opacity-90 px-4 py-2 rounded-md text-sm font-medium text-white transition-opacity" data-model="perplexity" data-model-name="Perplexity">Select Model</button>
+                    </div>
                 </div>
-            </div>
-            <p class="text-gray-300 mb-4">Answer engine with real-time search and citations.</p>
-            <div class="text-sm text-gray-400 space-y-1">
-                <div class="flex justify-between">
-                    <span>Best for:</span><span class="text-white">Research, Citations</span>
-                </div>
-                <div class="flex justify-between">
-                    <span>Version:</span><span class="text-white">Sonar/Claude 3</span>
-                </div>
-                <div class="flex justify-between">
-                    <span>Strength:</span><span class="text-white">Real-time Search</span>
-                </div>
-            </div>
-        </div>
-        <div class="px-6 py-4 bg-gray-800 bg-opacity-50">
-            <button class="w-full model-select-btn perplexity-bg hover:bg-opacity-90 px-4 py-2 rounded-md text-sm font-medium text-white transition-all" data-model="perplexity">
-                Select Model
-            </button>
-        </div>
-    </div>
 
-    <!-- Gemini Card -->
-    <div class="card rounded-lg overflow-hidden relative shadow-lg bg-gray-900">
-        <div class="model-indicator gemini-bg"></div>
-        <div class="p-6">
-            <div class="flex items-center mb-4">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/f/f0/Google_Gemini_logo.svg" alt="Gemini logo" class="h-12 w-12 rounded-lg bg-white p-1">
-                <div class="ml-4">
-                    <h3 class="text-lg font-semibold text-white">Gemini</h3>
-                    <p class="text-sm text-gray-400">by Google</p>
+                <!-- Gemini Card -->
+                <div class="card rounded-lg overflow-hidden relative shadow-lg gemini-glow">
+                    <div class="model-indicator gemini-bg"></div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                             <div class="h-12 w-12 rounded-lg bg-gray-800 p-2 flex items-center justify-center">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/f/f0/Google_Gemini_logo.svg" alt="Gemini logo" >
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-semibold text-white">Gemini</h3>
+                                <p class="text-sm text-gray-400">by Google</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-300 mb-4 text-sm h-12">Multimodal AI for text, code, and images with a massive context window.</p>
+                        <div class="text-sm text-gray-400 space-y-1">
+                             <div class="flex justify-between"><span>Best for:</span><span class="text-white font-medium">Multimodal Tasks</span></div>
+                             <div class="flex justify-between"><span>Version:</span><span class="text-white font-medium">Gemini 1.5 Pro</span></div>
+                             <div class="flex justify-between"><span>Context:</span><span class="text-white font-medium">1M tokens</span></div>
+                        </div>
+                    </div>
+                    <div class="px-6 py-4 bg-gray-900/50">
+                        <button class="w-full model-select-btn gemini-bg hover:opacity-90 px-4 py-2 rounded-md text-sm font-medium text-white transition-opacity" data-model="gemini" data-model-name="Gemini">Select Model</button>
+                    </div>
+                </div>
+                
+                <!-- DeepSeek Card -->
+                <div class="card rounded-lg overflow-hidden relative shadow-lg deepseek-glow">
+                    <div class="model-indicator deepseek-bg"></div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                             <div class="h-12 w-12 rounded-lg bg-gray-800 p-2 flex items-center justify-center">
+                                <img src="https://avatars.githubusercontent.com/u/161011186?s=200&v=4" alt="DeepSeek logo">
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-semibold text-white">DeepSeek</h3>
+                                <p class="text-sm text-gray-400">by DeepSeek AI</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-300 mb-4 text-sm h-12">Specialized in solving complex coding and mathematics problems.</p>
+                        <div class="text-sm text-gray-400 space-y-1">
+                             <div class="flex justify-between"><span>Best for:</span><span class="text-white font-medium">Coding, Math</span></div>
+                             <div class="flex justify-between"><span>Version:</span><span class="text-white font-medium">DeepSeek-V2</span></div>
+                             <div class="flex justify-between"><span>Context:</span><span class="text-white font-medium">128K tokens</span></div>
+                        </div>
+                    </div>
+                    <div class="px-6 py-4 bg-gray-900/50">
+                        <button class="w-full model-select-btn deepseek-bg hover:opacity-90 px-4 py-2 rounded-md text-sm font-medium text-white transition-opacity" data-model="deepseek" data-model-name="DeepSeek">Select Model</button>
+                    </div>
                 </div>
             </div>
-            <p class="text-gray-300 mb-4">Multimodal AI for text, code, and images.</p>
-            <div class="text-sm text-gray-400 space-y-1">
-                <div class="flex justify-between">
-                    <span>Best for:</span><span class="text-white">Multimodal Tasks</span>
-                </div>
-                <div class="flex justify-between">
-                    <span>Version:</span><span class="text-white">Gemini 1.5</span>
-                </div>
-                <div class="flex justify-between">
-                    <span>Context:</span><span class="text-white">1M tokens</span>
-                </div>
-            </div>
-        </div>
-        <div class="px-6 py-4 bg-gray-800 bg-opacity-50">
-            <button class="w-full model-select-btn gemini-bg hover:bg-opacity-90 px-4 py-2 rounded-md text-sm font-medium text-white transition-all" data-model="gemini">
-                Select Model
-            </button>
-        </div>
-    </div>
-
-    <!-- DeepSeek Card -->
-    <div class="card rounded-lg overflow-hidden relative shadow-lg bg-gray-900">
-        <div class="model-indicator deepseek-bg"></div>
-        <div class="p-6">
-            <div class="flex items-center mb-4">
-                <img src="https://avatars.githubusercontent.com/u/161011186?s=200&v=4" alt="DeepSeek logo" class="h-12 w-12 rounded-lg bg-white p-1">
-                <div class="ml-4">
-                    <h3 class="text-lg font-semibold text-white">DeepSeek</h3>
-                    <p class="text-sm text-gray-400">by DeepSeek AI</p>
-                </div>
-            </div>
-            <p class="text-gray-300 mb-4">Great at solving complex coding & math problems.</p>
-            <div class="text-sm text-gray-400 space-y-1">
-                <div class="flex justify-between">
-                    <span>Best for:</span><span class="text-white">Coding, Math</span>
-                </div>
-                <div class="flex justify-between">
-                    <span>Version:</span><span class="text-white">DeepSeek-V3</span>
-                </div>
-                <div class="flex justify-between">
-                    <span>Context:</span><span class="text-white">128K tokens</span>
-                </div>
-            </div>
-        </div>
-        <div class="px-6 py-4 bg-gray-800 bg-opacity-50">
-            <button class="w-full model-select-btn deepseek-bg hover:bg-opacity-90 px-4 py-2 rounded-md text-sm font-medium text-white transition-all" data-model="deepseek">
-                Select Model
-            </button>
-        </div>
-    </div>
-
-</div>
-
-
-        <!-- Footer Section -->
-        <footer class="bg-gray-900 py-6">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <p class="text-gray-400">
-                    &copy; 2025 Patil Group. All rights reserved.
+        </section>
+        
+        <!-- Try Now Section -->
+        <section id="try" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
+                    Try the <span class="gradient-text">AI Hub</span>
+                </h2>
+                <p id="try-subtitle" class="mt-4 max-w-2xl text-xl text-gray-400 mx-auto transition-all">
+                    Select a model above to get started.
                 </p>
             </div>
-        </footer>
+            
+            <div class="max-w-4xl mx-auto card rounded-lg p-8 transition-all duration-500 border-2 border-gray-800" id="try-container">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Input Column -->
+                    <div>
+                        <h3 class="font-bold text-lg mb-4">Input</h3>
+                        <div class="space-y-6">
+                             <!-- File Upload -->
+                             <div class="file-upload rounded-lg p-6 text-center cursor-pointer" id="file-drop-zone">
+                                <i class="fas fa-file-arrow-up text-4xl text-gray-500 mb-3"></i>
+                                <p class="text-gray-400">Drag & drop a document here</p>
+                                <p class="text-sm text-gray-500">or click to browse</p>
+                                <input type="file" id="file-input" class="hidden">
+                                <p id="file-name" class="mt-2 text-sm text-purple-400"></p>
+                            </div>
+                            
+                            <!-- Prompt Textarea -->
+                            <div>
+                                <label for="prompt-input" class="block text-sm font-medium text-gray-300 mb-2">Your Prompt</label>
+                                <textarea id="prompt-input" rows="6" class="w-full bg-gray-900 border border-gray-700 rounded-md p-3 text-white focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all" placeholder="Ask about the document or enter a general query..."></textarea>
+                            </div>
+                            
+                            <button id="generate-btn" class="w-full bg-gradient-to-r from-purple-600 to-amber-500 px-8 py-3 rounded-md text-lg font-medium text-white hover:opacity-90 transition-opacity shadow-lg shadow-purple-500/20 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                                Generate Response
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Output Column -->
+                    <div>
+                        <h3 class="font-bold text-lg mb-4">Output</h3>
+                        <div id="output-container" class="bg-gray-900 border border-gray-700 rounded-md p-4 h-full min-h-[200px] text-gray-400 overflow-y-auto">
+                            The generated response will appear here.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
+    
+    <!-- Footer Section -->
+    <footer class="bg-black border-t border-gray-800 py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-gray-400">
+                &copy; 2025 Patil Group. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const modelSelectButtons = document.querySelectorAll('.model-select-btn');
+        const tryContainer = document.getElementById('try-container');
+        const trySubtitle = document.getElementById('try-subtitle');
+        const generateBtn = document.getElementById('generate-btn');
+
+        // Model selection logic
+        modelSelectButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const model = button.dataset.model;
+                const modelName = button.dataset.modelName;
+                
+                // Update UI to reflect selected model
+                trySubtitle.innerHTML = `You have selected <span class="font-bold text-white">${modelName}</span>. Ready to generate.`;
+                
+                const borderClasses = ['chatgpt-border', 'perplexity-border', 'gemini-border', 'deepseek-border'];
+                tryContainer.classList.remove(...borderClasses);
+                tryContainer.classList.add(`${model}-border`);
+
+                generateBtn.disabled = false;
+                
+                // Smooth scroll to the try section
+                document.getElementById('try').scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // File upload logic
+        const fileDropZone = document.getElementById('file-drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const fileNameDisplay = document.getElementById('file-name');
+
+        fileDropZone.addEventListener('click', () => fileInput.click());
+        
+        fileDropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileDropZone.classList.add('border-purple-500', 'bg-purple-900/20');
+        });
+        
+        fileDropZone.addEventListener('dragleave', () => {
+            fileDropZone.classList.remove('border-purple-500', 'bg-purple-900/20');
+        });
+
+        const handleFile = (file) => {
+            if (file) {
+                fileNameDisplay.textContent = `File: ${file.name}`;
+                fileDropZone.classList.remove('border-purple-500', 'bg-purple-900/20');
+            }
+        };
+
+        fileDropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            handleFile(e.dataTransfer.files[0]);
+        });
+        
+        fileInput.addEventListener('change', (e) => {
+            handleFile(e.target.files[0]);
+        });
+    });
+</script>
 </body>
 </html>
+
